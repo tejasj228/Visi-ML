@@ -852,10 +852,12 @@ class DecisionTree(BaseModel):
 class RandomForest(BaseModel):
     """Random Forest ensemble classifier."""
     
-    def __init__(self, n_estimators=100, max_depth=None, random_state=None):
+    def __init__(self, n_estimators=100, max_depth=None, min_samples_split=2, max_features='sqrt', random_state=None):
         super().__init__()
         self.n_estimators = n_estimators
         self.max_depth = max_depth
+        self.min_samples_split = min_samples_split
+        self.max_features = max_features
         self.random_state = random_state
         
         self.estimators_ = []
@@ -868,9 +870,17 @@ class RandomForest(BaseModel):
         self.log_message("Training Random Forest...")
         try:
             from sklearn.ensemble import RandomForestClassifier
+            # Map deprecated/legacy values for compatibility
+            max_features = self.max_features
+            if isinstance(max_features, str) and max_features.lower() == 'auto':
+                # In modern sklearn, 'auto' behaves like 'sqrt' for classifiers
+                max_features = 'sqrt'
+            
             self.sklearn_model = RandomForestClassifier(
                 n_estimators=self.n_estimators,
                 max_depth=self.max_depth,
+                min_samples_split=self.min_samples_split,
+                max_features=max_features,
                 random_state=self.random_state
             )
             self.sklearn_model.fit(X, y)

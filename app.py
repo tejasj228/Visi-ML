@@ -22,32 +22,424 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for better styling
+# Custom CSS for modern, clean styling
 st.markdown("""
     <style>
+    /* Import modern fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    
+    /* Global styles */
+    .main .block-container {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+        animation: fadeIn 0.6s ease-out;
+    }
+    
+    /* Typography */
     .main-header {
-        font-size: 3rem;
-        color: #1f77b4;
+        font-family: 'Inter', sans-serif;
+        font-size: 3.5rem;
+        font-weight: 700;
+        color: #e85d04;
         text-align: center;
-        margin-bottom: 2rem;
-    }
-    .sub-header {
-        font-size: 1.5rem;
-        color: #666;
-        text-align: center;
-        margin-bottom: 2rem;
-    }
-    .info-box {
-        background-color: #f0f2f6;
-        padding: 1rem;
-        border-radius: 0.5rem;
         margin-bottom: 1rem;
+        animation: slideInDown 0.8s ease-out;
     }
-    .metric-card {
-        background-color: #ffffff;
-        padding: 1rem;
-        border-radius: 0.5rem;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    
+    .sub-header {
+        font-family: 'Inter', sans-serif;
+        font-size: 1.3rem;
+        font-weight: 400;
+        color: #64748b;
+        text-align: center;
+        margin-bottom: 3rem;
+        animation: slideInUp 0.8s ease-out 0.2s both;
+    }
+    
+    /* Sidebar styling */
+    .css-1d391kg {
+        background: #1a1a1a;
+        border-right: 1px solid #2d2d2d;
+    }
+    
+    /* Sidebar section boxes */
+    .css-1d391kg .stMarkdown h3 {
+        background: #8b4000 !important;
+        color: white !important;
+        border: 2px solid #e85d04 !important;
+        border-radius: 8px !important;
+        padding: 0.75rem 1rem !important;
+        margin: 1rem 0 0.5rem 0 !important;
+        font-weight: 600 !important;
+    }
+    
+    /* Sidebar selectbox styling */
+    .css-1d391kg .stSelectbox > div > div {
+        background: #8b4000 !important;
+        border: 2px solid #e85d04 !important;
+        color: white !important;
+    }
+    
+    .css-1d391kg .stSelectbox label {
+        color: white !important;
+    }
+    
+    /* Button styling - Fix visibility */
+    .stButton > button {
+        background: #e85d04 !important;
+        color: white !important;
+        border: 1px solid #2d2d2d !important;
+        border-radius: 8px !important;
+        padding: 0.75rem 1.5rem !important;
+        font-family: 'Inter', sans-serif !important;
+        font-weight: 500 !important;
+        transition: all 0.3s ease !important;
+        box-shadow: 0 2px 4px rgba(232, 93, 4, 0.3) !important;
+    }
+    
+    .stButton > button:hover {
+        background: #d63384 !important;
+        transform: translateY(-1px) !important;
+        box-shadow: 0 4px 8px rgba(232, 93, 4, 0.4) !important;
+    }
+    
+    .stButton > button:active {
+        transform: translateY(0) !important;
+    }
+    
+    /* Tab styling - Fix visibility */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 8px;
+        background: transparent !important;
+        padding-bottom: 1rem !important;
+    }
+    
+    .stTabs [data-baseweb="tab"] {
+        background: #2d2d2d !important;
+        color: #94a3b8 !important;
+        border: 1px solid #3d3d3d !important;
+        border-radius: 8px !important;
+        padding: 0.75rem 1.5rem !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    .stTabs [data-baseweb="tab"]:hover {
+        background: #3d3d3d !important;
+        color: #e85d04 !important;
+        border-color: #e85d04 !important;
+    }
+    
+    .stTabs [aria-selected="true"] {
+        background: #e85d04 !important;
+        color: white !important;
+        border-color: #e85d04 !important;
+    }
+    
+    /* Remove tab content border/highlighting */
+    .stTabs [data-baseweb="tab-panel"] {
+        border: none !important;
+        background: transparent !important;
+        padding-top: 1rem !important;
+    }
+    
+    /* Remove tab highlight indicator */
+    .stTabs [data-baseweb="tab-highlight"] {
+        display: none !important;
+    }
+    
+    .stTabs [data-baseweb="tab-border"] {
+        display: none !important;
+    }
+    
+    /* Data tabs styling */
+    .css-1cpxqw2 .stTabs [data-baseweb="tab"] {
+        background: #2d2d2d !important;
+        color: #94a3b8 !important;
+        border: 1px solid #3d3d3d !important;
+    }
+    
+    .css-1cpxqw2 .stTabs [aria-selected="true"] {
+        background: #e85d04 !important;
+        color: white !important;
+        border-color: #e85d04 !important;
+    }
+    
+    /* Slider styling */
+    .stSlider > div > div > div > div {
+        background: #e85d04 !important;
+    }
+    
+    /* Selectbox styling */
+    .stSelectbox > div > div {
+        border-radius: 8px !important;
+        border: 1px solid #2d2d2d !important;
+        background: #1a1a1a !important;
+        color: white !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    .stSelectbox > div > div:hover {
+        border-color: #e85d04 !important;
+        box-shadow: 0 0 0 2px rgba(232, 93, 4, 0.2) !important;
+    }
+    
+    /* Metric styling */
+    [data-testid="metric-container"] {
+        background: #1a1a1a !important;
+        border: 1px solid #2d2d2d !important;
+        padding: 1rem !important;
+        border-radius: 8px !important;
+        transition: all 0.3s ease !important;
+        animation: fadeInUp 0.6s ease-out !important;
+    }
+    
+    [data-testid="metric-container"]:hover {
+        transform: translateY(-2px) !important;
+        border-color: #e85d04 !important;
+    }
+    
+    /* Progress bar styling */
+    .stProgress > div > div > div > div {
+        background: #e85d04 !important;
+        border-radius: 4px !important;
+    }
+    
+    /* Success/Error message styling */
+    .stAlert {
+        border-radius: 8px !important;
+        border: 1px solid #e85d04 !important;
+        animation: slideInRight 0.5s ease-out !important;
+        background: rgba(232, 93, 4, 0.15) !important;
+    }
+    
+    .stAlertContainer {
+        background: rgba(232, 93, 4, 0.15) !important;
+        border: 1px solid #e85d04 !important;
+        border-radius: 8px !important;
+    }
+    
+    [data-testid="stAlertContentInfo"] {
+        color: white !important;
+    }
+    
+    [data-testid="stAlertContainer"] {
+        background: rgba(232, 93, 4, 0.15) !important;
+        border: 1px solid #e85d04 !important;
+    }
+    
+    .stSuccess {
+        background: rgba(16, 185, 129, 0.15) !important;
+        color: white !important;
+        border: 1px solid #10b981 !important;
+    }
+    
+    .stError {
+        background: rgba(239, 68, 68, 0.15) !important;
+        color: white !important;
+        border: 1px solid #ef4444 !important;
+    }
+    
+    .stInfo {
+        background: rgba(232, 93, 4, 0.15) !important;
+        color: white !important;
+        border: 1px solid #e85d04 !important;
+        border-radius: 8px !important;
+    }
+    
+    .stWarning {
+        background: rgba(245, 158, 11, 0.15) !important;
+        color: white !important;
+        border: 1px solid #f59e0b !important;
+    }
+    
+    /* Expander styling */
+    .streamlit-expanderHeader {
+        background: #2d2d2d !important;
+        border: 1px solid #3d3d3d !important;
+        border-radius: 8px !important;
+        transition: all 0.3s ease !important;
+        color: white !important;
+    }
+    
+    .streamlit-expanderHeader:hover {
+        background: #3d3d3d !important;
+        border-color: #e85d04 !important;
+    }
+    
+    /* Modern scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: #1a1a1a;
+        border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: #e85d04;
+        border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background: #d63384;
+    }
+    
+    /* Keyframe animations */
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    @keyframes fadeInUp {
+        from { 
+            opacity: 0; 
+            transform: translateY(20px); 
+        }
+        to { 
+            opacity: 1; 
+            transform: translateY(0); 
+        }
+    }
+    
+    @keyframes slideInDown {
+        from { 
+            opacity: 0; 
+            transform: translateY(-20px); 
+        }
+        to { 
+            opacity: 1; 
+            transform: translateY(0); 
+        }
+    }
+    
+    @keyframes slideInUp {
+        from { 
+            opacity: 0; 
+            transform: translateY(20px); 
+    
+        to { 
+            opacity: 1; 
+            transform: translateY(0); 
+        }
+    }
+    
+    @keyframes slideInRight {
+        from { 
+            opacity: 0; 
+            transform: translateX(20px); 
+        }
+        to { 
+    
+            opacity: 1; 
+            transform: translateX(0); 
+        }
+    }
+    
+    /* Remove white outlines */
+    * {
+        outline: none !important;
+    }
+    
+    /* Radio button styling */
+    .stRadio > div {
+        display: flex !important;
+        gap: 16px !important;
+        justify-content: center !important;
+    }
+    
+    .stRadio > div > label {
+        background: #2d2d2d !important;
+        color: #94a3b8 !important;
+        border: 1px solid #3d3d3d !important;
+        border-radius: 8px !important;
+        padding: 0.75rem 1.5rem !important;
+        transition: all 0.3s ease !important;
+        cursor: pointer !important;
+        font-weight: 500 !important;
+    }
+    
+    .stRadio > div > label:hover {
+        background: #3d3d3d !important;
+        color: #e85d04 !important;
+        border-color: #e85d04 !important;
+    }
+    
+    .stRadio > div > label[data-checked="true"] {
+        background: #e85d04 !important;
+        color: white !important;
+        border-color: #e85d04 !important;
+    }
+    
+    /* Custom card styling for main content columns */
+    [data-testid="column"]:nth-child(1) {
+        background: #2b2b2b !important;
+        border: 1px solid #3d3d3d !important;
+        border-radius: 12px !important;
+        padding: 1.5rem !important;
+        margin-right: 0.5rem !important;
+    }
+    
+    [data-testid="column"]:nth-child(2) {
+        background: #2b2b2b !important;
+        border: 1px solid #3d3d3d !important;
+        border-radius: 12px !important;
+        padding: 1.5rem !important;
+        margin-left: 0.5rem !important;
+    }
+    
+    /* Reduce gap between training buttons */
+    .stColumns > div {
+        gap: 0.25rem !important;
+    }
+    
+    /* Fix metrics card display */
+    [data-testid="metric-container"] {
+        background: #2b2b2b !important;
+        border: 1px solid #3d3d3d !important;
+        padding: 1rem !important;
+        border-radius: 8px !important;
+        transition: all 0.3s ease !important;
+        animation: fadeInUp 0.6s ease-out !important;
+    }
+    
+    [data-testid="metric-container"]:hover {
+        transform: translateY(-2px) !important;
+        border-color: #e85d04 !important;
+    }
+    
+    
+    /* Metrics card styling */
+    .metrics-card {
+        background: #2b2b2b !important;
+        border: 1px solid #3d3d3d !important;
+        border-radius: 8px !important;
+        padding: 1rem !important;
+        margin-bottom: 1rem !important;
+    }
+    
+    @keyframes slideInFromRight {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    
+    /* Input styling */
+    .stTextInput > div > div > input {
+        background: #2d2d2d !important;
+        border: 1px solid #3d3d3d !important;
+        color: white !important;
+        border-radius: 8px !important;
+    }
+    
+    .stTextInput > div > div > input:focus {
+        border-color: #e85d04 !important;
+        box-shadow: 0 0 0 2px rgba(232, 93, 4, 0.2) !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -79,6 +471,18 @@ def generate_data(task_type, pattern, n_samples, noise):
     st.session_state.X_test = X[indices[split_idx:]]
     st.session_state.y_test = y[indices[split_idx:]]
 
+from datetime import datetime
+
+# Simple in-app log in place of notifications
+if 'logs' not in st.session_state:
+    st.session_state.logs = []  # list of {time, level, message}
+
+def log_event(message: str, level: str = 'info'):
+    ts = datetime.now().strftime('%H:%M:%S')
+    st.session_state.logs.append({'time': ts, 'level': level, 'message': message})
+    if len(st.session_state.logs) > 200:
+        st.session_state.logs = st.session_state.logs[-200:]
+
 # Initialize session state
 if 'model' not in st.session_state:
     st.session_state.model = None
@@ -96,14 +500,30 @@ if 'y_test' not in st.session_state:
     st.session_state.y_test = None
 if 'iteration' not in st.session_state:
     st.session_state.iteration = 0
+if 'training_status' not in st.session_state:
+    st.session_state.training_status = ""
+
+def set_status(message: str):
+    """Set the single-line training status message shown under Training Metrics."""
+    st.session_state.training_status = message
+    # Don't mirror to Activity Log to avoid duplicate entries; callers should log explicitly when needed.
 
 # Header
 st.markdown('<h1 class="main-header">VisiML - Machine Learning Algorithm Visualizer</h1>', unsafe_allow_html=True)
 st.markdown('<p class="sub-header">Learn Machine Learning by Visualizing How Algorithms Work!</p>', unsafe_allow_html=True)
 
-# Sidebar for configuration
+# No toasts; logs are shown inline
+
+# Sidebar for configuration with modern styling
 with st.sidebar:
-    st.markdown("## 🎯 Configuration Panel")
+    st.markdown("""
+    <div style='text-align: center; padding: 0; margin: 0;'>
+        <h2 style='color: white; font-family: Inter, sans-serif; font-weight: 700; margin: 0; padding: 0;'>
+            Configuration Panel
+        </h2>
+    </div>
+    <hr style='border: none; height: 1px; background: #e85d04; margin: 1rem 0;'>
+    """, unsafe_allow_html=True)
     
     # Task selection
     st.markdown("### 1️⃣ Select Task Type")
@@ -142,7 +562,7 @@ with st.sidebar:
     # Data configuration
     st.markdown("### 3️⃣ Configure Data")
     
-    data_tab1, data_tab2 = st.tabs(["Generate Data", "Upload Data"])
+    data_tab1, data_tab2 = st.tabs(["GENERATE", "UPLOAD"])
     
     with data_tab1:
         n_samples = st.slider("Number of samples", 50, 1000, 200, 50,
@@ -173,9 +593,9 @@ with st.sidebar:
         noise = st.slider("Noise level", 0.0, 1.0, 0.1, 0.05,
                          help="Add randomness to make data more realistic")
         
-        if st.button("🎲 Generate Data", type="primary"):
+        if st.button(" Generate Data", type="primary"):
             generate_data(task_type, pattern, n_samples, noise)
-            st.success("✅ Data generated successfully!")
+            log_event("Data generated successfully!", level='success')
     
     with data_tab2:
         st.info("📤 Upload your own CSV file with features and target column")
@@ -454,8 +874,10 @@ def get_model_parameters(model_type, task_type):
     
     return params
 
-def start_training(model_type, task_type, params):
-    """Initialize and start model training"""
+def start_training(model_type, task_type, params, notify: bool = True):
+    """Initialize and start model training.
+    notify: when True, emits a 'model created' toast; when False, stays silent (used for param updates).
+    """
     # Create model instance based on type
     model_map = {
         'Linear Regression': LinearRegression,
@@ -487,7 +909,9 @@ def start_training(model_type, task_type, params):
         st.session_state.training_started = True
         st.session_state.iteration = 0
         st.session_state.training_complete = False
-        st.success(f"✅ {model_type} model created successfully!")
+        if notify:
+            log_event(f"{model_type} model created successfully!", level='success')
+        set_status(f"{model_type} model created")
     except Exception as e:
         st.error(f"❌ Error creating model: {str(e)}")
         st.error(f"Parameters: {clean_params}")
@@ -501,27 +925,32 @@ def train_step():
         st.session_state.model.partial_fit(st.session_state.X_train, st.session_state.y_train)
 
 def display_training_metrics(placeholder, model, task_type):
-    """Display real-time training metrics"""
+    """Display real-time training metrics inside an expander like other sections."""
     with placeholder.container():
-        if task_type == "Regression":
-            if hasattr(model, 'history') and 'costs' in model.history:
-                col1, col2 = st.columns(2)
-                with col1:
-                    if model.history['costs']:
+        with st.expander("📊 Training Metrics", expanded=True):
+            if task_type == "Regression":
+                if hasattr(model, 'history') and 'costs' in model.history and model.history['costs']:
+                    col1, col2 = st.columns(2)
+                    with col1:
                         st.metric("Current Loss", f"{model.history['costs'][-1]:.4f}")
-                with col2:
-                    if len(model.history['costs']) > 1:
-                        delta = model.history['costs'][-1] - model.history['costs'][-2]
-                        st.metric("Loss Change", f"{delta:.4f}")
-        else:
-            if hasattr(model, 'history') and 'accuracies' in model.history:
-                col1, col2 = st.columns(2)
-                with col1:
-                    if model.history['accuracies']:
+                    with col2:
+                        if len(model.history['costs']) > 1:
+                            delta = model.history['costs'][-1] - model.history['costs'][-2]
+                            st.metric("Loss Change", f"{delta:.4f}")
+                else:
+                    st.write("Metrics will appear after the first iteration.")
+            else:
+                if hasattr(model, 'history') and 'accuracies' in model.history and model.history['accuracies']:
+                    col1, col2 = st.columns(2)
+                    with col1:
                         st.metric("Current Accuracy", f"{model.history['accuracies'][-1]:.2%}")
-                with col2:
-                    if 'costs' in model.history and model.history['costs']:
-                        st.metric("Current Loss", f"{model.history['costs'][-1]:.4f}")
+                    with col2:
+                        if 'costs' in model.history and model.history['costs']:
+                            st.metric("Current Loss", f"{model.history['costs'][-1]:.4f}")
+                else:
+                    st.write("Metrics will appear after the first iteration.")
+
+    # Training status expander removed; status updates will be logged to Activity Log
 
 def create_data_visualization(X_train, y_train, X_test, y_test, task_type):
     """Create initial data visualization"""
@@ -827,6 +1256,165 @@ def display_learning_resources(model_type, task_type):
         for tutorial in resources[model_type]["tutorials"]:
             st.write(f"- {tutorial}")
 
+def render_activity_log(placeholder):
+    """Render the Activity Log inside the provided placeholder so we can call it after logging events."""
+    logs = st.session_state.get('logs', [])
+    with placeholder.container():
+        with st.expander("📝 Activity Log", expanded=False):
+            if not logs:
+                st.write("No activity yet.")
+            else:
+                st.markdown(
+                    """
+                    <style>
+                    #activity-log-container { height: 420px; overflow-y: auto; padding-right: 6px; }
+                    #activity-log-container::-webkit-scrollbar { width: 8px; }
+                    #activity-log-container::-webkit-scrollbar-thumb { background: #3d3d3d; border-radius: 4px; }
+                    </style>
+                    """,
+                    unsafe_allow_html=True,
+                )
+                entries = []
+                for entry in reversed(logs[-100:]):  # show last 100
+                    color = {
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'error': '#ef4444',
+                        'info': '#60a5fa'
+                    }.get(entry.get('level', 'info'), '#60a5fa')
+                    entries.append(
+                        f"<div style='padding:6px 10px;border-left:3px solid {color};margin:4px 0;background:rgba(255,255,255,0.02);border-radius:6px;'>"
+                        f"<span style='opacity:0.75;font-size:0.85rem'>{entry['time']}</span> "
+                        f"<span style='color:{color};text-transform:uppercase;font-size:0.75rem;margin-left:6px'>{entry.get('level','info')}</span> "
+                        f"<div style='margin-top:2px'>{entry['message']}</div>"
+                        f"</div>"
+                    )
+                st.markdown("<div id='activity-log-container'>" + "".join(entries) + "</div>", unsafe_allow_html=True)
+
+def display_training_summary(model_type, task_type):
+    """Display educational summary after training completion"""
+    # Small helper to format metrics
+    def maybe(val, fmt):
+        try:
+            return fmt.format(val)
+        except Exception:
+            return str(val)
+
+    params = st.session_state.get('last_params', {})
+    model = st.session_state.model
+    final_loss = None
+    accuracy = None
+    if hasattr(model, 'history') and isinstance(getattr(model, 'history'), dict):
+        costs = model.history.get('costs')
+        if costs:
+            final_loss = costs[-1]
+    # quick accuracy for classification if predict exists
+    if task_type == 'Classification' and hasattr(model, 'predict') and st.session_state.get('X_test') is not None:
+        try:
+            y_pred = model.predict(st.session_state.X_test)
+            accuracy = float(np.mean(y_pred == st.session_state.y_test))
+        except Exception:
+            pass
+
+    # Hardcoded teaching content by algorithm
+    summaries = {
+        'Linear Regression': {
+            'overview': 'Linear Regression models the relationship between input features and a continuous target as a straight line (or hyperplane).',
+            'how_it_works': [
+                'We assume y ≈ w·x + b (weights times features plus a bias).',
+                'A loss function (Mean Squared Error) measures how far predictions are from real values.',
+                'Gradient descent iteratively updates weights to reduce the loss.'
+            ],
+            'what_you_did': [
+                'Generated a synthetic regression dataset.',
+                f'Trained a {model_type} model using iterative optimization.',
+                'Observed the loss curve converging as training progressed.'
+            ],
+            'interpret_plots': [
+                'Predictions vs Data: the red line shows the fitted relationship.',
+                'Training Loss: should trend downward and flatten when converged.',
+                'Residual Plot: points scattered around 0 indicate a good unbiased fit.',
+                'Weight Evolution: shows how parameters stabilize over iterations.'
+            ],
+            'insights': [
+                'Learning rate controls step size—too large can diverge, too small is slow.',
+                'Regularization (L1/L2) can improve generalization by penalizing large weights.'
+            ]
+        },
+        'Logistic Regression': {
+            'overview': 'Logistic Regression is a linear classifier that outputs probabilities using the sigmoid function.',
+            'how_it_works': [
+                'We model P(y=1|x) = sigmoid(w·x + b).',
+                'Binary cross-entropy loss encourages correct probabilities.',
+                'Gradient descent updates parameters to maximize likelihood.'
+            ],
+            'what_you_did': [
+                'Generated a classification dataset.',
+                f'Trained a {model_type} classifier and monitored the loss/accuracy.'
+            ],
+            'interpret_plots': [
+                'Decision Boundary: area where the model switches class predictions.',
+                'Training Progress: loss down; accuracy up over iterations.',
+                'Confusion Matrix: counts of correct/incorrect predictions by class.'
+            ],
+            'insights': [
+                'Feature scaling helps optimization.',
+                'Regularization prevents overfitting when classes overlap.'
+            ]
+        }
+    }
+
+    content = summaries.get(model_type, {
+        'overview': f'{model_type} is a classic algorithm for {task_type.lower()} with intuitive behavior.',
+        'how_it_works': ['The algorithm optimizes a task-specific objective function.'],
+        'what_you_did': [f'Trained {model_type} on a synthetic dataset and reviewed key plots.'],
+        'interpret_plots': ['Use the provided plots to understand fit quality and learning dynamics.'],
+        'insights': ['Tune hyperparameters to balance bias and variance.']
+    })
+
+    # Card styling
+    st.markdown(
+        """
+        <style>
+        .summary-card { background:#1f1f1f; border:1px solid #3d3d3d; border-radius:12px; padding:16px; margin-top:14px; }
+        .summary-card h4 { color:#e85d04; margin:0 0 10px 0; }
+        .summary-section { margin:10px 0; }
+        .summary-section h5 { color:#cbd5e1; margin:0 0 6px 0; }
+        .summary-kv { display:flex; gap:16px; flex-wrap:wrap; margin:6px 0 12px 0; }
+        .kv-pill { background:#2b2b2b; border:1px solid #3d3d3d; padding:6px 10px; border-radius:999px; color:#e2e8f0; font-size:0.9rem; }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    # Build a single HTML block so the wrapper and its content are one element
+    facts = [
+        f"Task: {task_type}",
+        f"Algorithm: {model_type}",
+    ]
+    if final_loss is not None:
+        facts.append(f"Final Loss: {maybe(final_loss, '%.4f')}")
+    if accuracy is not None:
+        facts.append(f"Accuracy: {maybe(accuracy*100, '%.2f')}%")
+    if params:
+        facts.append("Params: " + ", ".join([f"{k}={v}" for k,v in list(params.items())[:6]]))
+
+    def li(items):
+        return "".join([f"<li>{x}</li>" for x in items])
+
+    html = f"""
+    <div class="summary-card">
+      <h4>🧠 Learning Summary</h4>
+      <div class="summary-kv">{''.join([f"<span class='kv-pill'>{f}</span>" for f in facts])}</div>
+      <div class="summary-section"><h5>What is this?</h5>{content['overview']}</div>
+      <div class="summary-section"><h5>How it works</h5><ul>{li(content.get('how_it_works', []))}</ul></div>
+      <div class="summary-section"><h5>What you did here</h5><ul>{li(content.get('what_you_did', []))}</ul></div>
+      <div class="summary-section"><h5>Interpreting the plots</h5><ul>{li(content.get('interpret_plots', []))}</ul></div>
+      <div class="summary-section"><h5>More insights</h5><ul>{li(content.get('insights', []))}</ul></div>
+    </div>
+    """
+    st.markdown(html, unsafe_allow_html=True)
+
 def export_results(model, model_type, task_type, params):
     """Export training results and model"""
     st.subheader("💾 Export Your Results")
@@ -933,6 +1521,7 @@ print(f"R²: {r2:.4f}")
     return code
 
 # Main content area
+
 col1, col2 = st.columns([2, 1])
 
 with col1:
@@ -973,12 +1562,29 @@ with col1:
             viz_placeholder.pyplot(fig)
             plt.close()
         else:
-            # Plot initial data
-            fig = create_data_visualization(st.session_state.X_train, st.session_state.y_train, 
-                                          st.session_state.X_test, st.session_state.y_test, 
-                                          task_type)
-            viz_placeholder.pyplot(fig)
-            plt.close()
+            # While training is in progress, avoid re-plotting the raw data to prevent flicker
+            if st.session_state.training_started:
+                pass  # keep current visualization intact during training
+            else:
+                # Plot initial data only when not training
+                fig = create_data_visualization(st.session_state.X_train, st.session_state.y_train, 
+                                              st.session_state.X_test, st.session_state.y_test, 
+                                              task_type)
+                viz_placeholder.pyplot(fig)
+                plt.close()
+        
+        # Activity Log placeholder (we will fill/update after training actions too)
+        activity_log_placeholder = st.empty()
+        render_activity_log(activity_log_placeholder)
+
+        # Learning Summary placeholder directly below Activity Log in col1
+        summary_placeholder = st.empty()
+        if st.session_state.get('training_complete') and st.session_state.get('model') is not None:
+            try:
+                with summary_placeholder.container():
+                    display_training_summary(model_type, task_type)
+            except Exception as e:
+                st.error(f"Summary error: {e}")
     else:
         st.info("👈 Please generate or upload data using the sidebar")
 
@@ -989,8 +1595,6 @@ with col2:
         params_dict = get_model_parameters(model_type, task_type)
         
         with st.expander("🎛️ Adjust Hyperparameters", expanded=True):
-            st.info("💡 **Tip**: Hover over each parameter to see what it does!")
-            
             user_params = {}
             for param_name, param_config in params_dict.items():
                 if param_config['type'] == 'slider':
@@ -1020,13 +1624,21 @@ with col2:
         if 'last_params' not in st.session_state:
             st.session_state.last_params = {}
         
-        # Detect parameter changes
+        # Detect parameter changes (aggregate all changes into a single toast)
         params_changed = False
+        changed_items = []
         for param_name, param_value in user_params.items():
             if param_name not in st.session_state.last_params or st.session_state.last_params[param_name] != param_value:
                 params_changed = True
-                st.warning(f"🔄 Parameter '{param_name}' changed from {st.session_state.last_params.get(param_name, 'None')} to {param_value}")
-                break
+                old_val = st.session_state.last_params.get(param_name, 'None')
+                changed_items.append(f"{param_name}: {old_val} → {param_value}")
+        if params_changed and changed_items:
+            log_event("Parameters updated: " + "; ".join(changed_items), level="info")
+            # Immediately refresh the Activity Log so the change is visible
+            try:
+                render_activity_log(activity_log_placeholder)
+            except Exception:
+                pass
         
         # If parameters changed and we have a trained model, show warning and recreate model
         if params_changed and st.session_state.training_complete:
@@ -1034,14 +1646,26 @@ with col2:
             if st.session_state.X_train is not None:
                 # Automatically recreate and retrain model with new parameters
                 try:
-                    start_training(model_type, task_type, user_params)
+                    # Silent model (no 'created' toast) during param-change retrain
+                    start_training(model_type, task_type, user_params, notify=False)
                     # Complete training immediately
                     if st.session_state.model:
                         st.session_state.model.fit(st.session_state.X_train, st.session_state.y_train)
                         st.session_state.training_complete = True
                         st.session_state.force_viz_refresh = True  # Flag to force visualization refresh
-                        st.success(f"🔄 Model updated! New K = {st.session_state.model.n_neighbors}")
-                        st.info("🔄 Model updated with new parameters!")
+                        # Final single log after retrain
+                        log_event("Model retrained successfully with updated parameters", level='success')
+                        # Refresh log and summary so UI reflects the new model immediately
+                        try:
+                            render_activity_log(activity_log_placeholder)
+                        except Exception:
+                            pass
+                        try:
+                            summary_placeholder.empty()
+                            with summary_placeholder.container():
+                                display_training_summary(model_type, task_type)
+                        except Exception:
+                            pass
                         
                 except Exception as e:
                     st.error(f"Error updating model: {str(e)}")
@@ -1049,74 +1673,105 @@ with col2:
             st.session_state.last_params = user_params.copy()
         
         # Training controls
-        st.markdown("### 🚀 Training Controls")
         
-        # Show current model info if available
-        if st.session_state.training_complete and st.session_state.model:
-            st.info(f"Current Model: K = {getattr(st.session_state.model, 'n_neighbors', 'N/A')}")
+        # Training buttons side by side with minimal gap (robust selector)
+        st.markdown("""
+        <style>
+        /* Tighten the exact row that contains the Start/Stop buttons */
+        div[data-testid="stHorizontalBlock"]:has(> div[data-testid="stColumn"] .stButton) {
+            gap: 0.5rem !important;
+            column-gap: 0.5rem !important;
+        }
+        div[data-testid="stHorizontalBlock"]:has(> div[data-testid="stColumn"] .stButton) > div[data-testid="stColumn"] {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
+        div[data-testid="stElementContainer"]:has(> .stButton) { margin-bottom: 0 !important; }
+        </style>
+        """, unsafe_allow_html=True)
         
-        col_train1, col_train2 = st.columns(2)
-        with col_train1:
-            if st.button("▶️ Start Training", type="primary", disabled=st.session_state.X_train is None):
-                start_training(model_type, task_type, user_params)
-        
-        with col_train2:
-            if st.button("⏹️ Stop Training", disabled=not st.session_state.training_started):
+        cols = st.columns(2)
+        with cols[0]:
+            start_disabled = (st.session_state.X_train is None) or st.session_state.training_started
+            if st.button("▶️ Start Training", type="primary", disabled=start_disabled, key="start_training"):
+                # Start only if not already in progress to avoid duplicate logs
+                if not st.session_state.training_started:
+                    start_training(model_type, task_type, user_params, notify=True)
+                    log_event("Training started", level='info')
+                    set_status("Training started")
+                # No immediate rerun; Streamlit will rerun naturally after button click.
+        with cols[1]:
+            if st.button("⏹️ Stop Training", disabled=not st.session_state.training_started, key="stop_training"):
                 st.session_state.training_started = False
+                log_event("Training stopped", level='warning')
+                set_status("Training stopped")
         
         # Training progress
         if st.session_state.training_started and st.session_state.model:
             progress_placeholder = st.empty()
             metrics_placeholder = st.empty()
+            # Show the metrics card immediately (will show status even if metrics empty)
+            display_training_metrics(metrics_placeholder, st.session_state.model, task_type)
             
             # Train the model completely instead of step-by-step for better stability
             if not st.session_state.training_complete:
-                with st.spinner('Training model...'):
+                training_error = None
+                loading_placeholder = st.empty()
+                
+                with loading_placeholder:
+                    with st.spinner('Training model...'):
+                        try:
+                            st.session_state.model.fit(st.session_state.X_train, st.session_state.y_train)
+                            st.session_state.training_complete = True
+                        except Exception as e:
+                            training_error = str(e)
+                            st.session_state.training_started = False
+                
+                # Clear loading placeholder
+                loading_placeholder.empty()
+                        
+                # Outside spinner: show results or error
+                if training_error:
+                    st.error(f"Training failed: {training_error}")
+                else:
+                    # Final training message
+                    log_event("Training completed!", level='success')
+                    set_status("Training completed successfully")
+                    st.session_state.training_started = False  # mark as stopped after completion
+                    
+                    # Update visualization and metrics after training just once
+                    fig = create_model_visualization(
+                        st.session_state.model,
+                        st.session_state.X_train,
+                        st.session_state.y_train,
+                        st.session_state.X_test,
+                        st.session_state.y_test,
+                        task_type,
+                        model_type,
+                    )
+                    viz_placeholder.pyplot(fig)
+                    display_training_metrics(metrics_placeholder, st.session_state.model, task_type)
+                    # Re-render the Activity Log so the latest messages are visible immediately
+                    render_activity_log(activity_log_placeholder)
+                    # Render/Update the Learning Summary immediately after initial training
                     try:
-                        st.session_state.model.fit(st.session_state.X_train, st.session_state.y_train)
-                        st.session_state.training_complete = True
-                        st.success("✅ Training completed!")
-                        
-                        # Update visualization after training
-                        fig = create_model_visualization(st.session_state.model, st.session_state.X_train, 
-                                                       st.session_state.y_train, st.session_state.X_test, 
-                                                       st.session_state.y_test, task_type, model_type)
-                        viz_placeholder.pyplot(fig)
-                        plt.close()
-                        
-                        # Display metrics
-                        display_training_metrics(metrics_placeholder, st.session_state.model, task_type)
-                        
-                    except Exception as e:
-                        st.error(f"Training failed: {str(e)}")
-                        st.session_state.training_started = False
+                        summary_placeholder.empty()
+                    except Exception:
+                        # If placeholder wasn't created (edge case), create it now under col1
+                        try:
+                            summary_placeholder = st.empty()
+                        except Exception:
+                            summary_placeholder = None
+                    if summary_placeholder is not None:
+                        try:
+                            with summary_placeholder.container():
+                                display_training_summary(model_type, task_type)
+                        except Exception:
+                            pass
+                    # No forced rerun; normal rerun is enough and prevents duplicate renders/logs.
+    
+    st.markdown("</div>", unsafe_allow_html=True)
+# (Learning Summary is rendered under Activity Log in col1 via summary_placeholder)
 
-# Bottom section - Results and Insights
-if st.session_state.training_complete and st.session_state.model:
-    st.markdown("## 📊 Results & Insights")
-    
-    tab1, tab2, tab3, tab4 = st.tabs(["📈 Performance Metrics", "🎯 Model Insights", 
-                                       "📚 Learning Resources", "💾 Export Results"])
-    
-    with tab1:
-        display_performance_metrics(st.session_state.model, st.session_state.X_test, 
-                                  st.session_state.y_test, task_type)
-    
-    with tab2:
-        display_model_insights(st.session_state.model, model_type, task_type)
-    
-    with tab3:
-        display_learning_resources(model_type, task_type)
-    
-    with tab4:
-        export_results(st.session_state.model, model_type, task_type, user_params)
-
-# Footer
-st.markdown("---")
-st.markdown("""
-<div style='text-align: center; color: #666;'>
-    <p>Made with ❤️ for ML Education | VisiML - Making Machine Learning Visual and Intuitive</p>
-    <p>Star ⭐ this project on <a href='https://github.com/your-username/VisiML'>GitHub</a></p>
-</div>
-""", unsafe_allow_html=True)
+ # Footer section removed per request
 
