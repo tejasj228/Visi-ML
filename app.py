@@ -8,6 +8,7 @@ import time
 import json
 from io import BytesIO
 import base64
+from datetime import datetime
 
 # Import the ML models and utilities from your code
 from ml_models import *
@@ -97,10 +98,28 @@ st.markdown("""
         box-shadow: 0 2px 4px rgba(232, 93, 4, 0.3) !important;
     }
     
+    /* Default button hover - for Generate Code and other buttons */
     .stButton > button:hover {
-        background: #d63384 !important;
+        background: #6b7280 !important;
+        border: 2px solid #e85d04 !important;
+        color: white !important;
         transform: translateY(-1px) !important;
         box-shadow: 0 4px 8px rgba(232, 93, 4, 0.4) !important;
+    }
+    
+    /* Secondary button styling for Clear button */
+    .stButton > button[kind="secondary"] {
+        background: #dc2626 !important;
+        border: 2px solid #dc2626 !important;
+        color: white !important;
+    }
+    
+    .stButton > button[kind="secondary"]:hover {
+        background: #6b7280 !important;
+        border: 2px solid #dc2626 !important;
+        color: white !important;
+        transform: translateY(-1px) !important;
+        box-shadow: 0 4px 8px rgba(220, 38, 38, 0.4) !important;
     }
     
     .stButton > button:active {
@@ -303,6 +322,187 @@ st.markdown("""
     }
     
     @keyframes slideInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes slideInRight {
+        from {
+            opacity: 0;
+            transform: translateX(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    
+    /* Full-page loader overlay */
+    .training-loader-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(26, 26, 26, 0.95);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 999999 !important;
+        animation: fadeIn 0.3s ease-out;
+    }
+    
+    /* Force sidebar and other elements to stay behind loader */
+    .css-1d391kg,
+    [data-testid="stSidebar"],
+    .stSidebar,
+    .css-17eq0hr,
+    .css-1lcbmhc {
+        z-index: 1 !important;
+    }
+    
+    /* When loader is active, force all other elements to lower z-index */
+    body:has(.training-loader-overlay) .css-1d391kg,
+    body:has(.training-loader-overlay) [data-testid="stSidebar"] {
+        z-index: 1 !important;
+    }
+    
+    .training-loader-spinner {
+        width: 60px;
+        height: 60px;
+        border: 4px solid #2d2d2d;
+        border-top: 4px solid #e85d04;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-bottom: 1rem;
+    }
+    
+    .training-loader-text {
+        color: white;
+        font-family: 'Inter', sans-serif;
+        font-size: 1.2rem;
+        font-weight: 500;
+        text-align: center;
+    }
+    
+    .training-loader-subtext {
+        color: #94a3b8;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.9rem;
+        font-weight: 400;
+        text-align: center;
+        margin-top: 0.5rem;
+    } 
+            transform: translateY(0); 
+        }
+    }
+
+    /* ===== Completion animation (confetti + checkmark) ===== */
+    .completion-overlay {
+        position: fixed;
+        inset: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0,0,0,0.35);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000000 !important; /* above everything incl. sidebar */
+        pointer-events: none;
+        animation: fadeIn 200ms ease-out;
+    }
+    .completion-center {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+    }
+    .completion-check {
+        width: 96px; height: 96px;
+        border-radius: 50%;
+        background: radial-gradient(circle at 30% 30%, #16a34a, #059669);
+        box-shadow: 0 8px 24px rgba(16,185,129,0.45), inset 0 0 12px rgba(255,255,255,0.2);
+        position: relative;
+        animation: popIn 380ms cubic-bezier(.2,.8,.2,1);
+    }
+    .completion-check::after{
+        content: '';
+        position: absolute;
+        left: 28px; top: 44px;
+        width: 18px; height: 4px;
+        background: #fff;
+        border-radius: 2px;
+        transform: rotate(45deg);
+        box-shadow: 0 0 2px rgba(0,0,0,0.15);
+    }
+    .completion-check::before{
+        content: '';
+        position: absolute;
+        left: 42px; top: 36px;
+        width: 36px; height: 4px;
+        background: #fff;
+        border-radius: 2px;
+        transform: rotate(-45deg);
+        box-shadow: 0 0 2px rgba(0,0,0,0.15);
+    }
+    .completion-text { 
+        color: #e5f9f0; 
+        font-family: 'Inter', sans-serif; 
+        font-weight: 700; 
+        font-size: 1.15rem; 
+        letter-spacing: .2px;
+        text-shadow: 0 2px 8px rgba(0,0,0,0.35);
+        animation: slideInUp 420ms ease-out;
+    }
+    @keyframes popIn { 
+        0% { transform: scale(.6); opacity: 0; } 
+        60% { transform: scale(1.08); opacity: 1; } 
+        100% { transform: scale(1); }
+    }
+    .confetti-piece {
+        position: fixed;
+        top: -12px;
+        width: 8px; height: 14px;
+        background: #e85d04;
+        border-radius: 2px;
+        opacity: 0;
+        z-index: 1000001 !important;
+        animation: confettiFall 2200ms linear forwards;
+    }
+    .confetti-piece.round { border-radius: 50%; }
+    .confetti-piece.blue { background: #3b82f6; }
+    .confetti-piece.green { background: #10b981; }
+    .confetti-piece.pink { background: #ec4899; }
+    @keyframes confettiFall {
+        0%   { transform: translateY(0) rotate(0deg); opacity: 0; }
+        10%  { opacity: 1; }
+        100% { transform: translateY(105vh) rotate(540deg); opacity: 0; }
+    }
+    
+    @keyframes slideInDown {
         from { 
             opacity: 0; 
             transform: translateY(-20px); 
@@ -445,6 +645,29 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Helper functions
+def show_training_loader():
+    """Show full-page training loader"""
+    st.markdown("""
+    <div class="training-loader-overlay">
+        <div class="training-loader-spinner"></div>
+        <div class="training-loader-text">Training Model...</div>
+        <div class="training-loader-subtext">Please wait while we train your machine learning model</div>
+    </div>
+    <script>
+    // Force sidebar to stay behind loader
+    setTimeout(function() {
+        const sidebar = document.querySelector('.css-1d391kg, [data-testid="stSidebar"]');
+        if (sidebar) {
+            sidebar.style.zIndex = '1';
+        }
+        const allSidebarElements = document.querySelectorAll('.css-1d391kg, [data-testid="stSidebar"], .stSidebar, .css-17eq0hr, .css-1lcbmhc');
+        allSidebarElements.forEach(el => {
+            el.style.zIndex = '1';
+        });
+    }, 100);
+    </script>
+    """, unsafe_allow_html=True)
+
 def generate_data(task_type, pattern, n_samples, noise):
     """Generate synthetic data based on user configuration"""
     if task_type == "Regression":
@@ -508,9 +731,77 @@ def set_status(message: str):
     st.session_state.training_status = message
     # Don't mirror to Activity Log to avoid duplicate entries; callers should log explicitly when needed.
 
+def show_completion_animation():
+    """Render a clean confetti + checkmark animation that auto-dismisses."""
+    # Build a handful of confetti pieces with varied colors/positions/delays
+    pieces = []
+    colors = ["", "blue", "green", "pink"]
+    shapes = ["", "round"]
+    for i in range(32):
+        left = (i * 3.1) % 100  # spread across the width
+        delay = (i % 8) * 0.08
+        cls = ("confetti-piece " + colors[i % len(colors)] + " " + shapes[i % len(shapes)]).strip()
+        pieces.append('<div class="' + cls + '" style="left:' + str(left) + '%; animation-delay:' + str(delay) + 's"></div>')
+
+    pieces_html = ''.join(pieces)
+    html_top = """
+    <div class="completion-overlay" id="completion-overlay">
+        <div class="completion-center">
+            <div class="completion-check"></div>
+            <div class="completion-text">Training Complete</div>
+        </div>
+    </div>
+    """
+    html_script = """
+    <script>
+        // Auto remove overlay & confetti after ~2.4s
+        setTimeout(function(){
+            var o = document.getElementById('completion-overlay');
+            if(o){
+                o.style.transition = 'opacity 300ms ease-out';
+                o.style.opacity = '0';
+                setTimeout(function(){ if (o && o.remove) { o.remove(); } }, 320);
+            }
+            // Remove confetti elements as well
+            var confetti = document.querySelectorAll('.confetti-piece');
+            confetti.forEach(function(el){ setTimeout(function(){ if (el && el.remove) { el.remove(); } }, 2400); });
+        }, 2100);
+    </script>
+    """
+    st.markdown(html_top + pieces_html + html_script, unsafe_allow_html=True)
+
+def clear_all():
+    """Clear all data and reset app to initial state"""
+    # Reset all session state variables
+    st.session_state.model = None
+    st.session_state.training_started = False
+    st.session_state.training_complete = False
+    st.session_state.X_train = None
+    st.session_state.y_train = None
+    st.session_state.X_test = None
+    st.session_state.y_test = None
+    st.session_state.iteration = 0
+    st.session_state.training_status = ""
+    st.session_state.logs = []
+    
+    # Clear any other relevant state
+    if 'last_params' in st.session_state:
+        del st.session_state.last_params
+    
+    log_event("Application reset to initial state", level='info')
+    st.rerun()
+
 # Header
 st.markdown('<h1 class="main-header">VisiML - Machine Learning Algorithm Visualizer</h1>', unsafe_allow_html=True)
 st.markdown('<p class="sub-header">Learn Machine Learning by Visualizing How Algorithms Work!</p>', unsafe_allow_html=True)
+
+# Add clear button in header area
+header_col1, header_col2, header_col3 = st.columns([1, 1, 1])
+with header_col2:
+    if st.button("🗑️ Clear & Reset All", key="header_clear", help="Reset all data, plots, and parameters to initial state"):
+        clear_all()
+
+st.markdown("---")  # Separator line
 
 # No toasts; logs are shown inline
 
@@ -1419,7 +1710,7 @@ def export_results(model, model_type, task_type, params):
     """Export training results and model"""
     st.subheader("💾 Export Your Results")
     
-    col1, col2, col3 = st.columns(3)
+    col1, col2, col3, col4 = st.columns(4)
     
     with col1:
         if st.button("📊 Download Plots"):
@@ -1459,6 +1750,10 @@ def export_results(model, model_type, task_type, params):
                 file_name=f"{model_type.lower().replace(' ', '_')}_code.py",
                 mime="text/plain"
             )
+    
+    with col4:
+        if st.button("🗑️ Clear All", type="secondary"):
+            clear_all()
 
 def generate_training_report(model, model_type, task_type, params):
     """Generate a comprehensive training report"""
@@ -1674,10 +1969,10 @@ with col2:
         
         # Training controls
         
-        # Training buttons side by side with minimal gap (robust selector)
+        # Training buttons with minimal gap (robust selector)
         st.markdown("""
         <style>
-        /* Tighten the exact row that contains the Start/Stop buttons */
+        /* Tighten the exact row that contains the Start Training button */
         div[data-testid="stHorizontalBlock"]:has(> div[data-testid="stColumn"] .stButton) {
             gap: 0.5rem !important;
             column-gap: 0.5rem !important;
@@ -1690,85 +1985,77 @@ with col2:
         </style>
         """, unsafe_allow_html=True)
         
-        cols = st.columns(2)
-        with cols[0]:
-            start_disabled = (st.session_state.X_train is None) or st.session_state.training_started
-            if st.button("▶️ Start Training", type="primary", disabled=start_disabled, key="start_training"):
-                # Start only if not already in progress to avoid duplicate logs
-                if not st.session_state.training_started:
-                    start_training(model_type, task_type, user_params, notify=True)
-                    log_event("Training started", level='info')
-                    set_status("Training started")
-                # No immediate rerun; Streamlit will rerun naturally after button click.
-        with cols[1]:
-            if st.button("⏹️ Stop Training", disabled=not st.session_state.training_started, key="stop_training"):
-                st.session_state.training_started = False
-                log_event("Training stopped", level='warning')
-                set_status("Training stopped")
+        start_disabled = (st.session_state.X_train is None) or st.session_state.training_started
+        if st.button("▶️ Start Training", type="primary", disabled=start_disabled, key="start_training"):
+            # Start only if not already in progress to avoid duplicate logs
+            if not st.session_state.training_started:
+                start_training(model_type, task_type, user_params, notify=True)
+                log_event("Training started", level='info')
+                set_status("Training started")
+            # No immediate rerun; Streamlit will rerun naturally after button click.
         
         # Training progress
         if st.session_state.training_started and st.session_state.model:
-            progress_placeholder = st.empty()
-            metrics_placeholder = st.empty()
-            # Show the metrics card immediately (will show status even if metrics empty)
-            display_training_metrics(metrics_placeholder, st.session_state.model, task_type)
-            
-            # Train the model completely instead of step-by-step for better stability
+            # Show full-page loader during training ONLY if not complete
             if not st.session_state.training_complete:
+                show_training_loader()
+                
+                # Perform training
                 training_error = None
-                loading_placeholder = st.empty()
-                
-                with loading_placeholder:
-                    with st.spinner('Training model...'):
-                        try:
-                            st.session_state.model.fit(st.session_state.X_train, st.session_state.y_train)
-                            st.session_state.training_complete = True
-                        except Exception as e:
-                            training_error = str(e)
-                            st.session_state.training_started = False
-                
-                # Clear loading placeholder
-                loading_placeholder.empty()
-                        
-                # Outside spinner: show results or error
-                if training_error:
+                try:
+                    st.session_state.model.fit(st.session_state.X_train, st.session_state.y_train)
+                    st.session_state.training_complete = True
+                    # Force a rerun to hide the loader and show results
+                    st.rerun()
+                except Exception as e:
+                    training_error = str(e)
+                    st.session_state.training_started = False
                     st.error(f"Training failed: {training_error}")
-                else:
-                    # Final training message
-                    log_event("Training completed!", level='success')
-                    set_status("Training completed successfully")
-                    st.session_state.training_started = False  # mark as stopped after completion
-                    
-                    # Update visualization and metrics after training just once
-                    fig = create_model_visualization(
-                        st.session_state.model,
-                        st.session_state.X_train,
-                        st.session_state.y_train,
-                        st.session_state.X_test,
-                        st.session_state.y_test,
-                        task_type,
-                        model_type,
-                    )
-                    viz_placeholder.pyplot(fig)
-                    display_training_metrics(metrics_placeholder, st.session_state.model, task_type)
-                    # Re-render the Activity Log so the latest messages are visible immediately
-                    render_activity_log(activity_log_placeholder)
-                    # Render/Update the Learning Summary immediately after initial training
+                    st.rerun()
+            else:
+                # Training is complete, show results (no loader)
+                progress_placeholder = st.empty()
+                metrics_placeholder = st.empty()
+                
+                # Show the metrics card
+                display_training_metrics(metrics_placeholder, st.session_state.model, task_type)
+                
+                # Final training message
+                log_event("Training completed!", level='success')
+                set_status("Training completed successfully")
+                st.session_state.training_started = False  # mark as stopped after completion
+                # Celebration animation (brief, auto-dismisses)
+                show_completion_animation()
+                
+                # Update visualization and metrics after training just once
+                fig = create_model_visualization(
+                    st.session_state.model,
+                    st.session_state.X_train,
+                    st.session_state.y_train,
+                    st.session_state.X_test,
+                    st.session_state.y_test,
+                    task_type,
+                    model_type,
+                )
+                viz_placeholder.pyplot(fig)
+                display_training_metrics(metrics_placeholder, st.session_state.model, task_type)
+                # Re-render the Activity Log so the latest messages are visible immediately
+                render_activity_log(activity_log_placeholder)
+                # Render/Update the Learning Summary immediately after initial training
+                try:
+                    summary_placeholder.empty()
+                except Exception:
+                    # If placeholder wasn't created (edge case), create it now under col1
                     try:
-                        summary_placeholder.empty()
+                        summary_placeholder = st.empty()
                     except Exception:
-                        # If placeholder wasn't created (edge case), create it now under col1
-                        try:
-                            summary_placeholder = st.empty()
-                        except Exception:
-                            summary_placeholder = None
-                    if summary_placeholder is not None:
-                        try:
-                            with summary_placeholder.container():
-                                display_training_summary(model_type, task_type)
-                        except Exception:
-                            pass
-                    # No forced rerun; normal rerun is enough and prevents duplicate renders/logs.
+                        summary_placeholder = None
+                if summary_placeholder is not None:
+                    try:
+                        with summary_placeholder.container():
+                            display_training_summary(model_type, task_type)
+                    except Exception:
+                        pass
     
     st.markdown("</div>", unsafe_allow_html=True)
 # (Learning Summary is rendered under Activity Log in col1 via summary_placeholder)
